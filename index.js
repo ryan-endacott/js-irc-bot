@@ -5,7 +5,7 @@ console.log('Starting IRC bot...')
 
 var client = new irc.Client(
     'chat.freenode.net',
-    'BetterBot1',
+    'MasterBot',
     {
       channels: ['#MizzouACM'],
     }
