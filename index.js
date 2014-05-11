@@ -38,11 +38,18 @@ function evaluate_javascript(message) {
   if (!/^js /.test(message)) return;
 
   var context = evaluate_javascript.context || {};
+  context.say = say;
 
   var js = message.replace(/^js /, '');
 
+
   // Run it
-  say(vm.runInNewContext(js, context));
+  try {
+    say(vm.runInNewContext(js, context));
+  }
+  catch (e) {
+    say(e);
+  }
 
   evaluate_javascript.context = context;
 }
