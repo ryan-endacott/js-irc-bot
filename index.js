@@ -1,5 +1,6 @@
 var irc = require('irc'),
-    vm = require('vm');
+    vm = require('vm'),
+    util = require('util');
 
 console.log('Starting IRC bot...')
 
@@ -59,6 +60,9 @@ function say(message) {
   // Handle null, undefined, etc
   if (!message)
     message = typeof(message);
+
+  if (typeof(message) === 'object')
+    message = util.inspect(message);
 
   client.say('#mizzouacm', message.toString());
 }
