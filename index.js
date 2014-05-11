@@ -1,4 +1,5 @@
-var irc = require('irc');
+var irc = require('irc'),
+    vm = require('vm');
 
 console.log('Starting IRC bot...')
 
@@ -12,6 +13,8 @@ var client = new irc.Client(
 
 client.addListener('message', function (from, to, message) {
   console.log('message: ' + from  + ': ', message);
+
+  evaluate_javascript(message);
 });
 
 client.addListener('pm', function (from,  message) {
@@ -27,5 +30,30 @@ client.addListener('error', function(message) {
 client.addListener('join', function(message) {
   client.say('#mizzouacm', 'Hello, world!');
 })
+
+
+// Safely (hopefully?) evaluate javascript in a message
+// if the message starts with `js `
+function evaluate_javascript(message) {
+  if (!/^js /.test(message)) return;
+
+  var context = evaluate_javascript.context || {};
+
+  var js = message.replace(/^js /, '');
+
+  // Run it
+  say(vm.runInNewContext(js, context));
+
+  evaluate_javascript.context = context;
+}
+
+function say(message) {
+
+  // Handle null, undefined, etc
+  if (!message)
+    message = typeof(message);
+
+  client.say('#mizzouacm', message.toString());
+}
 
 
