@@ -50,7 +50,7 @@ function evaluate_javascript(message) {
     say(vm.runInNewContext(js, context, {timeout: '1000'}));
   }
   catch (e) {
-    say(e);
+    say(e.message.split('\n').pop());
   }
 
   evaluate_javascript.context = context;
@@ -65,7 +65,17 @@ function say(message) {
   if (typeof(message) === 'object')
     message = util.inspect(message);
 
-  messageQueue.push(message.toString());
+  message = message.toString();
+
+  // Handle saying lines that are too long.
+  if (message.length > 200) {
+    message.match(/.{1,200}/g).forEach(function(line) {
+      messageQueue.push(line);
+    });
+  }
+  else {
+    messageQueue.push(message);
+  }
 }
 
 var messageQueue = [];
