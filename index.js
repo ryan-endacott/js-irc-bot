@@ -40,6 +40,7 @@ function evaluate_javascript(message) {
 
   var context = evaluate_javascript.context || {};
   context.say = say;
+  context.clear = clear;
 
   var js = message.replace(/^js /, '');
 
@@ -54,6 +55,11 @@ function evaluate_javascript(message) {
   }
 
   evaluate_javascript.context = context;
+}
+
+// Clears the message queue
+function clear() {
+  messageQueue = [];
 }
 
 function say(message) {
