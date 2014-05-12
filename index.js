@@ -51,7 +51,8 @@ function evaluate_javascript(message) {
     say(vm.runInNewContext(js, context, {timeout: '1000'}));
   }
   catch (e) {
-    say(e.message.split('\n').pop());
+    var error_message = e.message || e;
+    say(error_message.split('\n').pop());
   }
 
   evaluate_javascript.context = context;
