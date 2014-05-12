@@ -46,7 +46,6 @@ function evaluate_javascript(message) {
 
 
   // Run it
-
   try {
     say(vm.runInNewContext(js, context, {timeout: 1000}));
   }
@@ -63,6 +62,7 @@ function clear() {
   messageQueue = [];
 }
 
+// Say something to the channel
 function say(message) {
 
   // Handle null, undefined, etc
