@@ -65,7 +65,14 @@ function say(message) {
   if (typeof(message) === 'object')
     message = util.inspect(message);
 
-  client.say('#mizzouacm', message.toString());
+  messageQueue.push(message.toString());
 }
+
+var messageQueue = [];
+
+// To prevent flooding, keep a queue of things to say
+setInterval(function() {
+  client.say('#mizzouacm', messageQueue.shift());
+}, 600);
 
 
