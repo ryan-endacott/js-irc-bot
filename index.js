@@ -1,7 +1,6 @@
 var irc = require('irc'),
     vm = require('vm'),
-    util = require('util'),
-    Threads = require('threads_a_gogo');
+    util = require('util');
 
 console.log('Starting IRC bot...')
 
@@ -47,30 +46,12 @@ function evaluate_javascript(message) {
 
   // Run it
 
-  // Create a thread for evaluation
-  var t = Threads.create();
-
-  var full_js = " \
-  try { \
-    thread.emit('result', (require('vm').runInNewContext(js, context))); \
-  } \
-  catch (e) { \
-    thread.emit('result', e); \
-  } ";
-
-  t.eval(full_js);
-
-  // Destroy if it isn't done in five seconds
-  var timeout = setTimeout(function() {
-    t.destroy()
-  }, 5000);
-
-  // Clear the interval if it's done
-  // and say result
-  t.on('result', function(result) {
-    clearInterval(timeout);
-    say(result);
-  });
+  try {
+    say(vm.runInNewContext(js, context, {timeout: '1000'}));
+  }
+  catch (e) {
+    say(e);
+  }
 
   evaluate_javascript.context = context;
 }
