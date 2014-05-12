@@ -48,7 +48,7 @@ function evaluate_javascript(message) {
   // Run it
 
   try {
-    say(vm.runInNewContext(js, context, {timeout: '1000'}));
+    say(vm.runInNewContext(js, context, {timeout: 1000}));
   }
   catch (e) {
     var error_message = e.message || e;
