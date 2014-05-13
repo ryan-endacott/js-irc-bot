@@ -41,6 +41,7 @@ function evaluate_javascript(message) {
   var context = evaluate_javascript.context || {};
   context.say = say;
   context.clear = clear;
+  context.help = help;
 
   var js = message.replace(/^js /, '');
 
@@ -55,6 +56,12 @@ function evaluate_javascript(message) {
   }
 
   evaluate_javascript.context = context;
+}
+
+// Prints how to use the bot
+function help() {
+  say('Hello!  Say `js <JavaScript>` to evaluate JavaScript.');
+  say('For more info, see my readme here: https://github.com/ryan-endacott/js-irc-bot');
 }
 
 // Clears the message queue
